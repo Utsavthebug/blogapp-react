@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Akshar&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
+
+.container {
+  padding: 20px;
+}
+
+.detailPage {
+  padding: 20px;
+  display: flex;
+  margin-top: 40px;
+  align-items: center;
+  column-gap: 3rem;
+}
+
+.backBtn {
+  font-size: 40px;
+  background: transparent;
+  border: none;
+  color: rgba(30, 185, 223, 0.753);
+}
+
+.backBtn:hover {
+  cursor: pointer;
+  color: rgba(16, 93, 112, 0.959);
+}
+
+.imgWrapper {
+  height: 500px;
+  padding: 20px;
+
+  box-shadow: 10px 10px 16px -1px rgba(0, 0, 0, 0.44);
+  -webkit-box-shadow: 10px 10px 16px -1px rgba(0, 0, 0, 0.44);
+  -moz-box-shadow: 10px 10px 16px -1px rgba(0, 0, 0, 0.44);
+}
+
+.imgWrapper img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.title {
+  font-family: "Akshar", sans-serif;
+  font-size: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.titlediv {
+  padding: 20px;
+  margin: 0 auto;
+  width: 20%;
+  border-bottom: 4px solid rgba(30, 185, 223, 0.753);
+}
+
+.titlediv:hover {
+  border-bottom: 4px solid rgba(16, 93, 112, 0.959);
+}
+
+.desc {
+  font-family: "Open Sans", sans-serif;
+}
