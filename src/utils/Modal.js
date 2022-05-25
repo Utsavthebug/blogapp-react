@@ -12,6 +12,7 @@ export const Modal = ({ show, setShow }) => {
       .then(() => console.log("sucesfully deleted"))
       .catch((error) => console.log(error));
     closeModal();
+    //window.location.reload(false);
   }
 
   if (show.status) {

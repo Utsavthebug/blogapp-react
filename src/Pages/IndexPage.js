@@ -11,6 +11,7 @@ import {
   endBefore,
   limitToLast,
   orderBy,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../utils/config";
 import { Modal } from "../utils/Modal";
@@ -22,16 +23,31 @@ const IndexPage = () => {
   const [show, setShow] = useState({ status: false, id: "" });
   const [search, setSearch] = useState("");
   const [documentSnap, setdocumentSnap] = useState([]);
+  const pageSize = 2;
+  const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  async function handleNext() {
+  const PageinateData = async (type) => {
     const lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
-    const next = query(
-      collection(db, "posts"),
-      orderBy("title"),
-      startAfter(lastVisible),
-      limit(1)
-    );
+    let next;
+
+    if (type === "next") {
+      next = query(
+        collection(db, "posts"),
+        orderBy("title"),
+        startAfter(lastVisible),
+        limit(pageSize)
+      );
+    } else if (type === "previous") {
+      next = query(
+        collection(db, "posts"),
+        orderBy("title"),
+        endBefore(lastVisible),
+        limitToLast(pageSize)
+      );
+    } else if (type === "initial") {
+      next = query(collection(db, "posts"), orderBy("title"), limit(pageSize));
+    }
 
     const documentSnapshots = await getDocs(next);
     setdocumentSnap(documentSnapshots);
@@ -42,31 +58,15 @@ const IndexPage = () => {
     });
     setPosts(postArr);
     setCurrentPage((prev) => prev + 1);
-  }
-
-  async function handlePrevious() {
-    const lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
-    const previous = query(
-      collection(db, "posts"),
-      orderBy("title"),
-      endBefore(lastVisible),
-      limitToLast(1)
-    );
-
-    const documentSnapshots = await getDocs(previous);
-    setdocumentSnap(documentSnapshots);
-
-    const postArr = [];
-    documentSnapshots.forEach((doc) => {
-      postArr.push({ ...doc.data(), id: doc.id });
-    });
-    setPosts(postArr);
-    setCurrentPage((prev) => prev - 1);
-  }
+  };
 
   useEffect(() => {
     async function paginate() {
-      const first = query(collection(db, "posts"), orderBy("title"), limit(1));
+      const first = query(
+        collection(db, "posts"),
+        orderBy("title"),
+        limit(pageSize)
+      );
       const documentSnapshots = await getDocs(first);
 
       setdocumentSnap(documentSnapshots);
@@ -77,7 +77,17 @@ const IndexPage = () => {
       setPosts(postArr);
     }
 
+    //get the size of all document and calculate the total Pages
+    const q = query(collection(db, "posts"));
+    const unsubscribe = onSnapshot(q, (snapshot) =>
+      setTotalPage(Math.ceil(snapshot.size / pageSize))
+    );
+
     paginate();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
@@ -106,13 +116,17 @@ const IndexPage = () => {
 
         <div className={styles.Pagination}>
           <button
-            onClick={handlePrevious}
+            onClick={() => PageinateData("previous")}
             className={styles.nextBtn}
             disabled={currentPage === 1}
           >
             <BsFillSkipBackwardFill />
           </button>
-          <button onClick={handleNext} className={styles.forwardBtn}>
+          <button
+            onClick={() => PageinateData("next")}
+            className={styles.forwardBtn}
+            disabled={currentPage === totalPage}
+          >
             <BsFillSkipBackwardFill />
           </button>
         </div>
