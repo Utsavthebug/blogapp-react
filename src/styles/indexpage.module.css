@@ -32,3 +32,32 @@
 .SearchInput:focus {
   outline: none;
 }
+
+.Pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}
+
+.nextBtn {
+  padding: 20px;
+  background-color: transparent;
+  color: rgba(14, 11, 11, 0.61);
+  font-size: 20px;
+  border: none;
+}
+
+.forwardBtn {
+  padding: 20px;
+  transform: rotate(180deg);
+  background-color: transparent;
+  color: rgba(14, 11, 11, 0.61);
+  font-size: 20px;
+  border: none;
+}
+
+.nextBtn,
+.forwardBtn:hover {
+  cursor: pointer;
+}

@@ -38,7 +38,7 @@ export function upload(datas, dispatch, navigate) {
               navigate("/");
             });
           } else {
-            console.log("update without image");
+            console.log("update with image");
             setDoc(doc(db, "posts", id), uploadData).then(() => {
               //delete Image
               const imageRef = ref(storage, `images/${imageName}`);
@@ -54,7 +54,6 @@ export function upload(datas, dispatch, navigate) {
       }
     );
   } else {
-    console.log(data);
     setDoc(doc(db, "posts", id), data)
       .then(() => {
         dispatch({ type: "FORM_RESET" });

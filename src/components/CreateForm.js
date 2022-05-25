@@ -8,7 +8,6 @@ const CreateForm = ({ isEdit }) => {
   const [data, dispatch] = useContext(FormContext);
   const navigate = useNavigate();
 
-  console.log(data);
   function handleSubmit() {
     //upload(file);
     upload(data, dispatch, navigate);
