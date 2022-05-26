@@ -23,12 +23,6 @@ const Navbar = () => {
             Create
           </CustomLink>
         </li>
-
-        <li className={styles.navl}>
-          <CustomLink to="/contact" className={styles.a}>
-            Contact
-          </CustomLink>
-        </li>
       </ul>
     </div>
   );

@@ -9,9 +9,9 @@ import {
   getDocs,
   startAfter,
   endBefore,
-  limitToLast,
   orderBy,
   onSnapshot,
+  limitToLast,
 } from "firebase/firestore";
 import { db } from "../utils/config";
 import { Modal } from "../utils/Modal";
@@ -28,25 +28,27 @@ const IndexPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const PageinateData = async (type) => {
-    const lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
+    let lastVisible;
     let next;
 
     if (type === "next") {
+      lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
       next = query(
         collection(db, "posts"),
         orderBy("title"),
         startAfter(lastVisible),
         limit(pageSize)
       );
+      setCurrentPage((prev) => prev + 1);
     } else if (type === "previous") {
+      lastVisible = documentSnap.docs[0];
       next = query(
         collection(db, "posts"),
         orderBy("title"),
         endBefore(lastVisible),
         limitToLast(pageSize)
       );
-    } else if (type === "initial") {
-      next = query(collection(db, "posts"), orderBy("title"), limit(pageSize));
+      setCurrentPage((prev) => prev - 1);
     }
 
     const documentSnapshots = await getDocs(next);
@@ -57,7 +59,6 @@ const IndexPage = () => {
       postArr.push({ ...doc.data(), id: doc.id });
     });
     setPosts(postArr);
-    setCurrentPage((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -107,28 +108,29 @@ const IndexPage = () => {
         </div>
         <div className={styles.cardsWrapper}>
           {posts &&
-            posts
-              .filter((p) => p.title.toLowerCase().includes(search))
-              .map((post) => (
-                <PostCard key={post.id} post={post} setShow={setShow} />
-              ))}
+            posts.map((post) => (
+              <PostCard key={post.id} post={post} setShow={setShow} />
+            ))}
         </div>
 
         <div className={styles.Pagination}>
-          <button
-            onClick={() => PageinateData("previous")}
-            className={styles.nextBtn}
-            disabled={currentPage === 1}
-          >
-            <BsFillSkipBackwardFill />
-          </button>
-          <button
-            onClick={() => PageinateData("next")}
-            className={styles.forwardBtn}
-            disabled={currentPage === totalPage}
-          >
-            <BsFillSkipBackwardFill />
-          </button>
+          {!(currentPage === 1) && (
+            <button
+              onClick={() => PageinateData("previous")}
+              className={styles.nextBtn}
+            >
+              <BsFillSkipBackwardFill />
+            </button>
+          )}
+          {!(currentPage === totalPage && !search) && (
+            <button
+              onClick={() => PageinateData("next")}
+              className={styles.forwardBtn}
+              disabled={currentPage === totalPage}
+            >
+              <BsFillSkipBackwardFill />
+            </button>
+          )}
         </div>
       </div>
     </PageLayout>
