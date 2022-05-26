@@ -24,7 +24,7 @@ const PostDetail = () => {
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
-        <button className={styles.backBtn} onClick={() => navigate("/")}>
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>
           <IoArrowBackCircle />
         </button>
         <div className={styles.titlediv}>

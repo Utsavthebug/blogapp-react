@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageLayout from "./PageLayout";
 import styles from "../styles/indexpage.module.css";
 import PostCard from "../components/PostCard";
@@ -19,18 +19,22 @@ import { db } from "../utils/config";
 import { Modal } from "../utils/Modal";
 import { FcSearch } from "react-icons/fc";
 import { BsFillSkipBackwardFill } from "react-icons/bs";
+import { SnapContext } from "../contexts/SnapContext";
+//import { useLocation } from "react-router-dom";
 
 const IndexPage = () => {
   const [posts, setPosts] = useState([]);
   const [show, setShow] = useState({ status: false, id: "" });
   const [search, setSearch] = useState("");
-  const [documentSnap, setdocumentSnap] = useState([]);
+  //const [documentSnap, setdocumentSnap] = useState([]);
   const [size, setSize] = useState(0);
   const pageSize = 2;
   const [totalPage, setTotalPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  //const location = useLocation();
+  //const [currentPage, setCurrentPage] = useState(1);
 
-  console.log(size);
+  const { documentSnap, setdocumentSnap, currentPage, setCurrentPage } =
+    useContext(SnapContext);
 
   const PageinateData = async (type) => {
     let lastVisible;
@@ -72,6 +76,7 @@ const IndexPage = () => {
     documentSnapshots.forEach((doc) => {
       postArr.push({ ...doc.data(), id: doc.id });
     });
+    console.log(postArr);
     setPosts(postArr);
   };
 
@@ -114,19 +119,23 @@ const IndexPage = () => {
       setPosts(filtered);
     }
 
-    if (search) {
-      filter();
-    } else {
-      paginate();
+    if (!documentSnap?.docs?.length) {
+      if (search) {
+        filter();
+      } else {
+        paginate();
+      }
     }
 
     return () => {
       unsubscribe();
     };
-  }, [search]);
+  }, [search, setdocumentSnap]);
 
   useEffect(() => {
+    console.log("yo1");
     async function getInitalData() {
+      //console.log(location);
       const lastVisible = documentSnap.docs[0];
 
       const next = query(
@@ -143,6 +152,7 @@ const IndexPage = () => {
       documentSnapshots.forEach((doc) => {
         postArr.push({ ...doc.data(), id: doc.id });
       });
+      console.log(postArr);
 
       if (postArr.length) {
         setPosts(postArr);
