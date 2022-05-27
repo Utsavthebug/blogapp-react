@@ -41,7 +41,7 @@ const PostDetail = () => {
 
         <div className={styles.content}>
           <div className={styles.descWrapper}>
-            <h3 className={styles.desc}>{post.description}</h3>
+            <h3 className={styles.desc}>{post.descriptions}</h3>
           </div>
         </div>
       </div>

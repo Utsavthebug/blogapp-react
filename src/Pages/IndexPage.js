@@ -132,6 +132,8 @@ const IndexPage = () => {
     };
   }, [search, setdocumentSnap]);
 
+  console.log(currentPage);
+
   useEffect(() => {
     console.log("yo1");
     async function getInitalData() {
@@ -152,7 +154,7 @@ const IndexPage = () => {
       documentSnapshots.forEach((doc) => {
         postArr.push({ ...doc.data(), id: doc.id });
       });
-      console.log(postArr);
+      console.log(postArr.length);
 
       if (postArr.length) {
         setPosts(postArr);
@@ -161,9 +163,7 @@ const IndexPage = () => {
       }
     }
 
-    if (size > 0) {
-      getInitalData();
-    }
+    getInitalData();
   }, [size]);
 
   return (
@@ -190,7 +190,7 @@ const IndexPage = () => {
 
         {!search && (
           <div className={styles.Pagination}>
-            {!(currentPage === 1) && (
+            {!(currentPage <= 1) && (
               <button
                 onClick={() => PageinateData("previous")}
                 className={styles.nextBtn}
@@ -198,7 +198,7 @@ const IndexPage = () => {
                 <BsFillSkipBackwardFill />
               </button>
             )}
-            {!(currentPage === totalPage && !search) && (
+            {!(currentPage >= totalPage && !search) && (
               <button
                 onClick={() => PageinateData("next")}
                 className={styles.forwardBtn}

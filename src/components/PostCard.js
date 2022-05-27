@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const PostCard = ({ post, setShow }) => {
   const navigate = useNavigate();
-
+  console.log(post);
   return (
     <div className={styles.cardWrapper} onClick={() => navigate(`/${post.id}`)}>
       <div>
@@ -15,9 +15,9 @@ const PostCard = ({ post, setShow }) => {
         <div>
           <h3 className={styles.postTitle}>{post.title}</h3>
           <p>
-            {post.description.length > 200
-              ? `${post.description.substr(0, 200)}...`
-              : post.description}
+            {post?.description.length > 200
+              ? `${post?.description.substr(0, 200)}...`
+              : post?.description}
           </p>
         </div>
       </div>
