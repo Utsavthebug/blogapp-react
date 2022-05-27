@@ -3,9 +3,9 @@ export function Checkvalid(data) {
   let err = {};
 
   Object.keys(data).forEach((key) => {
-    console.log(validate(key, data[key]));
-    if (validate(key, data[key])) {
-      err[key] = validate(key, data[key]);
+    const msg = validate(key, data[key]);
+    if (msg) {
+      err[key] = msg;
     }
   });
 

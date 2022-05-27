@@ -30,7 +30,6 @@ const CreateForm = ({ isEdit }) => {
   // console.log(error);
 
   function handleChange(e) {
-    console.log(data);
     const { name, value } = e.target;
     dispatch({ type: "HANDLE_CHANGE", payload: { name, value } });
   }
@@ -76,7 +75,7 @@ const CreateForm = ({ isEdit }) => {
         ></textarea>
       </div>
       {error.hasError && (
-        <span className={styles.error}>{error.descriptions}</span>
+        <span className={styles.error}>{error.description}</span>
       )}
 
       <div className={styles.formcontrol}>

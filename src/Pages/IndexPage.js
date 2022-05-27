@@ -20,18 +20,18 @@ import { Modal } from "../utils/Modal";
 import { FcSearch } from "react-icons/fc";
 import { BsFillSkipBackwardFill } from "react-icons/bs";
 import { SnapContext } from "../contexts/SnapContext";
+import Error from "../components/Error";
+import ReactLoading from "react-loading";
+
 //import { useLocation } from "react-router-dom";
 
 const IndexPage = () => {
   const [posts, setPosts] = useState([]);
   const [show, setShow] = useState({ status: false, id: "" });
   const [search, setSearch] = useState("");
-  //const [documentSnap, setdocumentSnap] = useState([]);
   const [size, setSize] = useState(0);
   const pageSize = 2;
   const [totalPage, setTotalPage] = useState(0);
-  //const location = useLocation();
-  //const [currentPage, setCurrentPage] = useState(1);
 
   const { documentSnap, setdocumentSnap, currentPage, setCurrentPage } =
     useContext(SnapContext);
@@ -138,7 +138,7 @@ const IndexPage = () => {
     console.log("yo1");
     async function getInitalData() {
       //console.log(location);
-      const lastVisible = documentSnap.docs[0];
+      const lastVisible = documentSnap?.docs[0];
 
       const next = query(
         collection(db, "posts"),
@@ -158,7 +158,7 @@ const IndexPage = () => {
 
       if (postArr.length) {
         setPosts(postArr);
-      } else {
+      } else if (currentPage >= 1) {
         PageinateData("previous");
       }
     }
@@ -182,10 +182,13 @@ const IndexPage = () => {
           </span>
         </div>
         <div className={styles.cardsWrapper}>
-          {posts &&
+          {posts.length ? (
             posts.map((post) => (
               <PostCard key={post.id} post={post} setShow={setShow} />
-            ))}
+            ))
+          ) : (
+            <Error />
+          )}
         </div>
 
         {!search && (

@@ -2,15 +2,26 @@ import React from "react";
 import styles from "../styles/components/postcard.module.css";
 import { AiFillDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 const PostCard = ({ post, setShow }) => {
   const navigate = useNavigate();
   console.log(post);
+
   return (
     <div className={styles.cardWrapper} onClick={() => navigate(`/${post.id}`)}>
       <div>
         <div className={styles.imageWrapper}>
-          <img src={post.imageURL} alt="uploaded" />
+          {post.imageURL ? (
+            <img src={post.imageURL} alt="uploaded" />
+          ) : (
+            <ReactLoading
+              type={"spin"}
+              color={"red"}
+              height={667}
+              width={375}
+            />
+          )}
         </div>
         <div>
           <h3 className={styles.postTitle}>{post.title}</h3>
