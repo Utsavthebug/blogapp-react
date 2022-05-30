@@ -129,7 +129,7 @@ const IndexPage = () => {
     return () => {
       unsubscribe();
     };
-  }, [search, setdocumentSnap, size]);
+  }, [search, setdocumentSnap, size, setCurrentPage]);
 
   return (
     <PageLayout>
