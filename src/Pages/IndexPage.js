@@ -21,7 +21,6 @@ import { FcSearch } from "react-icons/fc";
 import { BsFillSkipBackwardFill } from "react-icons/bs";
 import { SnapContext } from "../contexts/SnapContext";
 import Error from "../components/Error";
-import ReactLoading from "react-loading";
 
 //import { useLocation } from "react-router-dom";
 
@@ -30,7 +29,7 @@ const IndexPage = () => {
   const [show, setShow] = useState({ status: false, id: "" });
   const [search, setSearch] = useState("");
   const [size, setSize] = useState(0);
-  const pageSize = 2;
+  const pageSize = 3;
   const [totalPage, setTotalPage] = useState(0);
 
   const { documentSnap, setdocumentSnap, currentPage, setCurrentPage } =
@@ -43,7 +42,7 @@ const IndexPage = () => {
     if (type === "next") {
       setCurrentPage(currentPage + 1);
       lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
-      console.log(documentSnap);
+      // console.log(documentSnap);
       next = query(
         collection(db, "posts"),
         orderBy("title"),
@@ -51,6 +50,7 @@ const IndexPage = () => {
         limit(pageSize)
       );
     } else if (type === "previous") {
+      console.log(" previous deleted");
       setCurrentPage(currentPage - 1);
       lastVisible = documentSnap.docs[0];
       next = query(
@@ -69,8 +69,6 @@ const IndexPage = () => {
         limitToLast(pageSize)
       );
     }
-    console.log("current", currentPage);
-    console.log("total", totalPage);
 
     const documentSnapshots = await getDocs(next);
     setdocumentSnap(documentSnapshots);
@@ -79,7 +77,7 @@ const IndexPage = () => {
     documentSnapshots.forEach((doc) => {
       postArr.push({ ...doc.data(), id: doc.id });
     });
-    //console.log(postArr);
+    console.log(postArr);
     setPosts(postArr);
   };
 
@@ -122,49 +120,44 @@ const IndexPage = () => {
       setPosts(filtered);
     }
 
-    if (search) {
+    if (search.length > 0) {
       filter();
     } else {
+      setCurrentPage(1);
       paginate();
     }
 
     return () => {
       unsubscribe();
     };
-  }, [search, setdocumentSnap]);
+  }, [search, setdocumentSnap, size]);
 
-  useEffect(() => {
-    async function getInitalData() {
-      setCurrentPage(1);
-      const lastVisible = documentSnap?.docs[0];
+  // useEffect(() => {
+  //   async function getInitalData() {
+  //     console.log("deleted");
+  //     const next = query(
+  //       collection(db, "posts"),
+  //       orderBy("title"),
+  //       limit(pageSize)
+  //     );
 
-      const next =
-        currentPage === 1
-          ? query(collection(db, "posts"), orderBy("title"), limit(pageSize))
-          : query(
-              collection(db, "posts"),
-              orderBy("title"),
-              startAt(lastVisible),
-              limit(pageSize)
-            );
+  //     const documentSnapshots = await getDocs(next);
+  //     setdocumentSnap(documentSnapshots);
 
-      const documentSnapshots = await getDocs(next);
-      setdocumentSnap(documentSnapshots);
+  //     const postArr = [];
+  //     documentSnapshots.forEach((doc) => {
+  //       postArr.push({ ...doc.data(), id: doc.id });
+  //     });
 
-      const postArr = [];
-      documentSnapshots.forEach((doc) => {
-        postArr.push({ ...doc.data(), id: doc.id });
-      });
+  //     if (postArr.length) {
+  //       setPosts(postArr);
+  //     } else if (currentPage >= 1) {
+  //       PageinateData("previous");
+  //     }
+  //   }
 
-      if (postArr.length) {
-        setPosts(postArr);
-      } else if (currentPage >= 1) {
-        PageinateData("previous");
-      }
-    }
-
-    getInitalData();
-  }, [size]);
+  //   getInitalData();
+  // }, [size]);
 
   return (
     <PageLayout>
@@ -193,7 +186,7 @@ const IndexPage = () => {
 
         {!search && (
           <div className={styles.Pagination}>
-            {!(currentPage <= 1) && (
+            {currentPage >= 2 && (
               <button
                 onClick={() => PageinateData("previous")}
                 className={styles.nextBtn}
