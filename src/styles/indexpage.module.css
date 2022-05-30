@@ -1,0 +1,63 @@
+.cardsWrapper {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 4rem;
+  row-gap: 4rem;
+  padding: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search {
+  font-size: 25px;
+  margin-left: 5px;
+}
+
+.SearchInput {
+  height: 35px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.SearchInput:focus {
+  outline: none;
+}
+
+.Pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}
+
+.nextBtn {
+  padding: 20px;
+  background-color: transparent;
+  color: rgba(14, 11, 11, 0.61);
+  font-size: 20px;
+  border: none;
+}
+
+.forwardBtn {
+  padding: 20px;
+  transform: rotate(180deg);
+  background-color: transparent;
+  color: rgba(14, 11, 11, 0.61);
+  font-size: 20px;
+  border: none;
+}
+
+.nextBtn,
+.forwardBtn:hover {
+  cursor: pointer;
+}

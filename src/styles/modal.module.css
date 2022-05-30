@@ -1,0 +1,46 @@
+.modalWrapper {
+  position: fixed;
+  background-color: rgba(56, 50, 50, 0.445);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalBox {
+  padding: 15px;
+  background-color: rgb(61, 56, 56);
+  width: 400px;
+  border-radius: 5px;
+  color: white;
+}
+
+.closeBtn {
+  display: block;
+  float: right;
+  font-size: 25px;
+  color: rgb(221, 50, 50);
+}
+
+.closeBtn:hover {
+  cursor: pointer;
+}
+
+.succesBtn {
+  margin-top: 20px;
+  float: right;
+  padding: 10px;
+  border: none;
+  background: rgb(221, 50, 50);
+  border-radius: 5px;
+  color: white;
+}
+
+.succesBtn:hover {
+  cursor: pointer;
+}

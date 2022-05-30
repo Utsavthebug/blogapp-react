@@ -1,0 +1,27 @@
+.Wrapper {
+  margin: 0px auto;
+}
+
+.Content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  font-size: 30px;
+  color: rgba(235, 72, 72, 0.767);
+}
+
+.createBtn {
+  margin-top: 10px;
+  padding: 15px;
+  color: white;
+  border: none;
+  background-color: rgb(18, 165, 223);
+  font-size: 15px;
+}
+
+.createBtn:hover {
+  cursor: pointer;
+}
