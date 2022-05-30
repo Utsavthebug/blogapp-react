@@ -41,15 +41,17 @@ const IndexPage = () => {
     let next;
 
     if (type === "next") {
+      setCurrentPage(currentPage + 1);
       lastVisible = documentSnap.docs[documentSnap.docs.length - 1];
+      console.log(documentSnap);
       next = query(
         collection(db, "posts"),
         orderBy("title"),
         startAfter(lastVisible),
         limit(pageSize)
       );
-      setCurrentPage((prev) => prev + 1);
     } else if (type === "previous") {
+      setCurrentPage(currentPage - 1);
       lastVisible = documentSnap.docs[0];
       next = query(
         collection(db, "posts"),
@@ -57,7 +59,6 @@ const IndexPage = () => {
         endBefore(lastVisible),
         limitToLast(pageSize)
       );
-      setCurrentPage((prev) => prev - 1);
     } else if (type === "deleted") {
       lastVisible = documentSnap.docs[0];
 
@@ -68,6 +69,8 @@ const IndexPage = () => {
         limitToLast(pageSize)
       );
     }
+    console.log("current", currentPage);
+    console.log("total", totalPage);
 
     const documentSnapshots = await getDocs(next);
     setdocumentSnap(documentSnapshots);
@@ -76,7 +79,7 @@ const IndexPage = () => {
     documentSnapshots.forEach((doc) => {
       postArr.push({ ...doc.data(), id: doc.id });
     });
-    console.log(postArr);
+    //console.log(postArr);
     setPosts(postArr);
   };
 
@@ -119,12 +122,10 @@ const IndexPage = () => {
       setPosts(filtered);
     }
 
-    if (!documentSnap?.docs?.length) {
-      if (search) {
-        filter();
-      } else {
-        paginate();
-      }
+    if (search) {
+      filter();
+    } else {
+      paginate();
     }
 
     return () => {
@@ -132,20 +133,20 @@ const IndexPage = () => {
     };
   }, [search, setdocumentSnap]);
 
-  console.log(currentPage);
-
   useEffect(() => {
-    console.log("yo1");
     async function getInitalData() {
-      //console.log(location);
+      setCurrentPage(1);
       const lastVisible = documentSnap?.docs[0];
 
-      const next = query(
-        collection(db, "posts"),
-        orderBy("title"),
-        startAt(lastVisible),
-        limit(pageSize)
-      );
+      const next =
+        currentPage === 1
+          ? query(collection(db, "posts"), orderBy("title"), limit(pageSize))
+          : query(
+              collection(db, "posts"),
+              orderBy("title"),
+              startAt(lastVisible),
+              limit(pageSize)
+            );
 
       const documentSnapshots = await getDocs(next);
       setdocumentSnap(documentSnapshots);
@@ -154,7 +155,6 @@ const IndexPage = () => {
       documentSnapshots.forEach((doc) => {
         postArr.push({ ...doc.data(), id: doc.id });
       });
-      console.log(postArr.length);
 
       if (postArr.length) {
         setPosts(postArr);
@@ -201,11 +201,10 @@ const IndexPage = () => {
                 <BsFillSkipBackwardFill />
               </button>
             )}
-            {!(currentPage >= totalPage && !search) && (
+            {currentPage < totalPage && !search.length && (
               <button
                 onClick={() => PageinateData("next")}
                 className={styles.forwardBtn}
-                disabled={currentPage === totalPage}
               >
                 <BsFillSkipBackwardFill />
               </button>

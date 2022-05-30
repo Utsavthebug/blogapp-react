@@ -18,7 +18,9 @@ const CreateForm = ({ isEdit }) => {
 
   function handleSubmit() {
     const { title, author, description, file } = data;
-    const status = Checkvalid({ title, author, description, file });
+    const status = isEdit
+      ? Checkvalid({ title, author, description })
+      : Checkvalid({ title, author, description, file });
 
     if (status.hasError) {
       setError(status);

@@ -6,7 +6,7 @@ import ReactLoading from "react-loading";
 
 const PostCard = ({ post, setShow }) => {
   const navigate = useNavigate();
-  console.log(post);
+  //console.log(post);
 
   return (
     <div className={styles.cardWrapper} onClick={() => navigate(`/${post.id}`)}>
@@ -25,7 +25,7 @@ const PostCard = ({ post, setShow }) => {
         </div>
         <div>
           <h3 className={styles.postTitle}>{post.title}</h3>
-          <p>
+          <p className={styles.desc}>
             {post?.description.length > 200
               ? `${post?.description.substr(0, 200)}...`
               : post?.description}
