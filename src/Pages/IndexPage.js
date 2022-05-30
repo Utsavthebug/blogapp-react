@@ -12,7 +12,6 @@ import {
   orderBy,
   onSnapshot,
   limitToLast,
-  startAt,
 } from "firebase/firestore";
 
 import { db } from "../utils/config";
@@ -131,33 +130,6 @@ const IndexPage = () => {
       unsubscribe();
     };
   }, [search, setdocumentSnap, size]);
-
-  // useEffect(() => {
-  //   async function getInitalData() {
-  //     console.log("deleted");
-  //     const next = query(
-  //       collection(db, "posts"),
-  //       orderBy("title"),
-  //       limit(pageSize)
-  //     );
-
-  //     const documentSnapshots = await getDocs(next);
-  //     setdocumentSnap(documentSnapshots);
-
-  //     const postArr = [];
-  //     documentSnapshots.forEach((doc) => {
-  //       postArr.push({ ...doc.data(), id: doc.id });
-  //     });
-
-  //     if (postArr.length) {
-  //       setPosts(postArr);
-  //     } else if (currentPage >= 1) {
-  //       PageinateData("previous");
-  //     }
-  //   }
-
-  //   getInitalData();
-  // }, [size]);
 
   return (
     <PageLayout>
